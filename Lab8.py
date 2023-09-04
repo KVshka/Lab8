@@ -75,7 +75,13 @@ def Main(A, N, K): #Расчёт и окно вывода
     result = Tk() #создаём окно вывода и выводим результат
     result.title("Вывод результата")
     result.geometry("800x600")
-    Res = Label(master=result, text=f'Результат\n {Result}')
+    Res = Label(master=result, text=f'Результат')
+    for i in range(len(Result)):
+        Res = Label(master=result, text=f'{Res["text"]}\n')
+        for j in range(len(Result[i])):
+            Res = Label(master=result, text=f'{Res["text"]} {"%6d" % Result[i][j]}')
+    #for i in Result:
+    #    Res = Label(master=result, text=f'{Res["text"]}\n {i}')
     Res.pack()
 
 
@@ -92,7 +98,7 @@ def test():
     entr = Label(master=window, text="Введите число K (модуль)")
     entr.pack()
     entry = ttk.Entry(window)
-    entry.pack(anchor=NW, padx=6, pady=6)
+    entry.pack(padx=6, pady=6)
     but = ttk.Button(master=window, text='Ввод', command=Get)
     but.pack()
 
@@ -120,7 +126,7 @@ def random():
     entr = Label(master=window, text="Введите число N")
     entr.pack()
     entry = ttk.Entry(window)
-    entry.pack(anchor=NW, padx=6, pady=6)
+    entry.pack(padx=6, pady=6)
     but = ttk.Button(master=window, text='Ввод', command=GetN)
     but.pack()
 
