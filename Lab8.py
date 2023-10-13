@@ -4,7 +4,7 @@
 
 #Импорт библиотек
 from tkinter import *
-from tkinter import ttk
+from tkinter import font
 import numpy as np
 import re
 # Тестовые данные
@@ -74,16 +74,25 @@ def Main(A, N, K): #Расчёт и окно вывода
                                 Result = np.copy(Matrix)
     result = Tk() #создаём окно вывода и выводим результат
     result.title("Вывод результата")
-    result.geometry("800x600")
-    Res = Label(master=result, text=f'Результат')
-    for i in range(len(Result)):
-        Res = Label(master=result, text=f'{Res["text"]}\n')
-        for j in range(len(Result[i])):
-            Res = Label(master=result, text=f'{Res["text"]} {"%6d" % Result[i][j]}')
-    #for i in Result:
-    #    Res = Label(master=result, text=f'{Res["text"]}\n {i}')
-    Res.pack()
+    result.minsize(width=200, height=100)
+    result.maxsize(width=1920, height=1080)
+    result.configure(background="#F8F8FF")
+    font1 = font.Font(family="Verdana", size=11, weight="normal", slant="roman")
+    font2 = font.Font(family="Verdana", size=1, weight="normal", slant="roman")
+    Res_label = Label(master=result, font=font1, anchor=W, text="Результат", background="#F8F8FF")
+    Res_label.pack(pady=10)
+    Res = Text(master=result, font=font2, background="#F8F8FF")
 
+    for i in range(len(Result)):
+        Res.insert(1.0, "\n")
+        for j in range(len(Result[i])):
+            Res.insert(1.0, "%6d" % Result[i][j])
+    Res.tag_add('tag1', 1.0, f'{N}.end')
+    Res.tag_config('tag1', justify=CENTER)
+    Res.pack(side=LEFT)
+    scrollbarY = Scrollbar(master=result, command=Res.yview)
+    scrollbarY.pack(side=LEFT, fill=Y)
+    Res.config(yscrollcommand=scrollbarY.set)
 
 #Функция для тестовых данных
 def test(): 
@@ -92,16 +101,14 @@ def test():
         Main(A, N, K)
     N = N_test
     A = A_test
-    window = Tk()
-    window.title("Ввод данных")
-    window.geometry("800x600")
-    entr = Label(master=window, text="Введите число K (модуль)")
-    entr.pack()
-    entry = ttk.Entry(window)
+    label["text"] = "Введите число K (модуль)"
+    entry = Entry()
     entry.pack(padx=6, pady=6)
-    but = ttk.Button(master=window, text='Ввод', command=Get)
-    but.pack()
-
+    btn2.destroy()
+    btn1.destroy()
+    btn = Button(text="Ввод", font=font1, command = Get, bg="#6A5ACD", fg="#FFFFFF") #создаём кнопки и устанавливаем внутри окна
+    btn.pack(padx=10, pady=10)
+    
 #Функция для случайных данных
 def random():
     def GetN():
@@ -110,33 +117,35 @@ def random():
             Main(A, N, K)
         N = int(entry.get())
         if N < 2:
-            entr["text"] = 'Число N слишком малое. Введите N >= 2'
+            label["text"] = 'Число N слишком малое. Введите N >= 2'
         elif N % 2 != 0:
-            entr["text"] = 'Введите чётное число N'
+            label["text"] = 'Введите чётное число N'
         else:
             #Формируем матрицу А
             A = np.random.randint(-10, 10, size=(N, N))
-            entr["text"] = 'Введите число K (модуль)'
+            label["text"] = 'Введите число K (модуль)'
             entry.delete(0, END)
-            but["command"]=Get
+            btn["command"]=Get
 
-    window = Tk()
-    window.title("Ввод данных")
-    window.geometry("800x600")
-    entr = Label(master=window, text="Введите число N")
-    entr.pack()
-    entry = ttk.Entry(window)
+    label["text"] = "Введите число N"
+    entry = Entry()
     entry.pack(padx=6, pady=6)
-    but = ttk.Button(master=window, text='Ввод', command=GetN)
-    but.pack()
+    btn2.destroy()
+    btn1.destroy()
+    btn = Button(text="Ввод", font=font1, command = GetN, bg="#6A5ACD") #создаём кнопки и устанавливаем внутри окна
+    btn.pack(padx=10, pady=10)
+
 
 root = Tk()     # создаем корневой объект - окно
-root.title("Лабораторная работа №8")     # устанавливаем заголовок окна
-root.geometry("800x600")    # устанавливаем размеры окна
-label = Label(text="Использовать тестовые данные или случайные?") # создаем текстовую метку
-label.pack()    # размещаем метку в окне
-btn = ttk.Button(text="Тестовые", command = test) #создаём кнопки и устанавливаем внутри окна
-btn.pack() 
-btn = ttk.Button(text="Случайные", command = random)
-btn.pack() 
+root.title('Лабораторная работа №8')     # устанавливаем заголовок окна
+root.geometry("400x300")    # устанавливаем размеры окна
+root.configure(background="#F8F8FF")
+font1 = font.Font(family= "Verdana", size=11, weight="normal", slant="roman")
+label = Label(text="Использовать тестовые данные или случайные?\nТестовые данные - единичная матрица 10 на 10", font=font1, anchor=W, background="#F8F8FF")
+label.pack(padx=6, pady=6) # создаем текстовую метку
+btn1 = Button(text='Тестовые', command = test, font=font1, bg="#6A5ACD", fg="#FFFFFF")
+btn1.pack(padx=6, pady=6) #создаём кнопки и устанавливаем внутри окна
+btn2 = Button(text='Случайные', command = random, font=font1, bg="#6A5ACD", fg="#FFFFFF")
+btn2.pack(padx=6, pady=6)
+
 root.mainloop()
