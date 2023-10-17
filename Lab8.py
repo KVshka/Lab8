@@ -72,6 +72,7 @@ def Main(A, N, K): #Расчёт и окно вывода
                             if max < sum:
                                 max = sum
                                 Result = np.copy(Matrix)
+                                
     result = Tk() #создаём окно вывода и выводим результат
     result.title("Вывод результата")
     result.minsize(width=200, height=100)
@@ -98,10 +99,11 @@ def Main(A, N, K): #Расчёт и окно вывода
 def test(): 
     def Get():
         K = int(entry.get())
-        Main(A, N, K)
+        if K != 0:
+            Main(A, N, K)
     N = N_test
     A = A_test
-    label["text"] = "Введите число K (модуль)"
+    label["text"] = "Введите число K, не равное 0 (модуль)"
     entry = Entry()
     entry.pack(padx=6, pady=6)
     btn2.destroy()
@@ -127,7 +129,7 @@ def random():
             entry.delete(0, END)
             btn["command"]=Get
 
-    label["text"] = "Введите число N"
+    label["text"] = "Введите число N (размер исходной матрицы)"
     entry = Entry()
     entry.pack(padx=6, pady=6)
     btn2.destroy()
@@ -138,10 +140,10 @@ def random():
 
 root = Tk()     # создаем корневой объект - окно
 root.title('Лабораторная работа №8')     # устанавливаем заголовок окна
-root.geometry("400x300")    # устанавливаем размеры окна
+root.geometry("450x300")    # устанавливаем размеры окна
 root.configure(background="#F8F8FF")
 font1 = font.Font(family= "Verdana", size=11, weight="normal", slant="roman")
-label = Label(text="Использовать тестовые данные или случайные?\nТестовые данные - единичная матрица 10 на 10", font=font1, anchor=W, background="#F8F8FF")
+label = Label(text="Данная программа заменяет подматрицы исходной\nматрицы нулевыми подматрицами так, что сумма\n по модулю К элементов квадрата, составленного\nиз главных и побочных диагоналей подматриц\nрезультирующей матрицы максимальна.\nИспользовать тестовые данные или случайные?\nТестовые данные - единичная матрица 10 на 10", font=font1, anchor=N, background="#F8F8FF")
 label.pack(padx=6, pady=6) # создаем текстовую метку
 btn1 = Button(text='Тестовые', command = test, font=font1, bg="#6A5ACD", fg="#FFFFFF")
 btn1.pack(padx=6, pady=6) #создаём кнопки и устанавливаем внутри окна
